@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>home</title>
+        <h1>
+           <center> PROFILE<hr></center>
+        </h1> 
+        <link rel ="stylesheet" href="assets/css/first.css">
+        <link rel ="stylesheet" href="assets/css/second.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <h2>
+            <div class="container">
+                <div id="navbar">
+                    <a href="#home"><h3> Home</h3></ahref>
+                    <a href="education.html"><h3> Education</h3></ahref>
+                    <a href="#projects worked"><h3> Projects worked</h3></ahref>
+                    <a href="#more about me"><h3> More about me</h3></ahref>
+                </div>
+            </div>                  
+        </h2>
+    </head>
+    <body> 
+        <div class="boxlist">
+            <div class="box1">
+                <img src="assets/image/image_8752.JPG">
+            </div>
+            <div class="box2"><br>  
+                <p>Hello! I'm Thulasi Prasad Y R, a passionate [Your Profession or Interest]. With [X years/months] of experience in [Specific Field or Industry], I thrive on [mention what drives you or your main motivation]. My journey has been fueled by a dedication to [highlight a key value or skill], allowing me to [mention a notable achievement or goal]. I'm excited to [your aspirations or how you aim to contribute], aiming to [your overall goal or mission]. Let's embark on this journey together!</p>
+            </div>
+        </div>        
+    </body>
+    <script>
+        window.onscroll = function() {myFunction()};
+        
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+        
+        function myFunction() {
+          if (window.pageYOffset >= sticky) {
+            navbar.classList.add("sticky")
+          } else {
+            navbar.classList.remove("sticky");
+          }
+        }
+        (function () {
+    [...document.querySelectorAll(".control")].forEach(button => {
+        button.addEventListener("click", function() {
+            document.querySelector(".active-btn").classList.remove("active-btn");
+            this.classList.add("active-btn");
+            document.querySelector(".active").classList.remove("active");
+            document.getElementById(button.dataset.id).classList.add("active");
+        })
+    });
+    document.querySelector(".theme-btn").addEventListener("click", () => {
+        document.body.classList.toggle("light-mode");
+    })
+})();
+
+    </script>
+    </div>
+    <div class="theme-btn">
+        <i class="fas fa-adjust"></i>
+    </div>
+</html>
