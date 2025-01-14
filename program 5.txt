@@ -1,0 +1,24 @@
+import numpy as np
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Embedding, LSTM, Dense
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+data = "The quick brown fox jumps over the lazy dog. The quick brown fox is fast and clever."
+tok, tok.fit_on_texts([data]) = Tokenizer(), tok.fit_on_texts([data])
+seq = pad_sequences([tok.texts_to_sequences([line])[0][:i + 1] for line in data.split('. ') 
+                     for i in range(1, len(tok.texts_to_sequences([line])[0]))],
+                    maxlen := max(len(tok.texts_to_sequences([line])[0]) for line in data.split('. ')), padding='pre')
+X, y, vocab = seq[:, :-1], np.eye(len(tok.word_index) + 1)[seq[:, -1]], len(tok.word_index) + 1
+
+model = Sequential([Embedding(vocab, 50, input_length=maxlen - 1), LSTM(100), Dense(vocab, activation='softmax')])
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(X, y, epochs=50, verbose=1)
+
+def predict(seed, n):
+    for _ in range(n):
+        seq = pad_sequences([tok.texts_to_sequences([seed])[0]], maxlen=maxlen - 1, padding='pre')
+        seed += " " + next(word for word, idx in tok.word_index.items() if idx == np.argmax(model.predict(seq), axis=-1))
+    return seed
+
+print(predict("The quick brown", 3))
