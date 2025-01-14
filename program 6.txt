@@ -1,0 +1,19 @@
+import torch
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+EPOCHS, BATCH_SIZE, LR, MAX_LEN = 5, 4, 5e-6, 75
+texts = ["AI transforms the world.", "The future lies in automation.", "NLP drives AI advancements."]
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+tokenizer.pad_token = tokenizer.eos_token
+model = GPT2LMHeadModel.from_pretrained("gpt2").to("cuda" if torch.cuda.is_available() else "cpu")
+optimizer = torch.optim.AdamW(model.parameters(), lr=LR)
+data = [tokenizer(t, max_length=MAX_LEN, padding="max_length", truncation=True, return_tensors="pt") for t in texts]
+for _ in range(EPOCHS):
+    for batch in data:
+        batch = {k: v.to(model.device) for k, v in batch.items()}
+        loss = model(**batch, labels=batch["input_ids"]).loss
+        loss.backward(), optimizer.step(), optimizer.zero_grad()
+    print(f"Loss: {loss.item()}")
+prompt = "Artificial Intelligence"
+input_ids = tokenizer(prompt, return_tensors="pt").to(model.device)["input_ids"]
+output = model.generate(input_ids, max_length=MAX_LEN, pad_token_id=tokenizer.pad_token_id)
+print("Generated Text:", tokenizer.decode(output[0], skip_special_tokens=True))
